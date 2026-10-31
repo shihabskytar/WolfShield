@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  engine:
+    name: Engine lint, typecheck, test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @wolfshield/engine typecheck
+      - run: pnpm --filter @wolfshield/engine test
+      - name: Reject personal data in fixtures
+        run: |
+          if grep -R -E -n "(01[3-9][0-9]{8}|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})" data/ packages/engine/tests/ 2>/dev/null; then
+            echo "Personal data found in fixtures/data — see CONTRIBUTING.md"
+            exit 1
+          fi
+
+  rust:
+    name: Rust check (Windows)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo check --manifest-path apps/desktop/src-tauri/Cargo.toml
+
+  build-windows:
+    name: Build Windows app
+    runs-on: windows-latest
+    needs: [engine, rust]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - uses: dtolnay/rust-toolchain@stable
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @wolfshield/desktop tauri build
