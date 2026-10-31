@@ -1,0 +1,4 @@
+# M2 only — versions to verify before training.
+# scikit-learn
+# onnx
+# onnxruntime
