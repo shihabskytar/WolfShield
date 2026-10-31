@@ -1,0 +1,11 @@
+node_modules/
+dist/
+target/
+src-tauri/target/
+*.log
+.env
+.DS_Store
+apps/desktop/src-tauri/target/
+ml/.venv/
+ml/__pycache__/
+*.onnx
