@@ -1,0 +1,8 @@
+{
+  "dataVersion": "0.1.0",
+  "note": "SEED EXAMPLE ONLY. These are example domains, not confirmed malicious domains. A real blocklist must come from a verified, signed source in M1+.",
+  "domains": [
+    "bkash-offer.example",
+    "nagad-prize.example"
+  ]
+}

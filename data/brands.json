@@ -1,0 +1,34 @@
+{
+  "dataVersion": "0.1.0",
+  "updated": "2026-11-01",
+  "brands": [
+    {
+      "name": "bKash",
+      "domains": [
+        "bkash.com"
+      ],
+      "note": "Mobile money service in Bangladesh"
+    },
+    {
+      "name": "Nagad",
+      "domains": [
+        "nagad.com.bd"
+      ],
+      "note": "Mobile money service in Bangladesh"
+    },
+    {
+      "name": "Rocket",
+      "domains": [
+        "dutchbanglabank.com"
+      ],
+      "note": "Dutch-Bangla Bank mobile banking brand"
+    },
+    {
+      "name": "Bangladesh Bank",
+      "domains": [
+        "bb.org.bd"
+      ],
+      "note": "Central bank, for impersonation detection only"
+    }
+  ]
+}

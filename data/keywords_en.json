@@ -1,0 +1,24 @@
+{
+  "dataVersion": "0.1.0",
+  "language": "en",
+  "packs": [
+    {
+      "id": "otp_request",
+      "phrases": [
+        "share your OTP",
+        "send your PIN",
+        "verify your password"
+      ],
+      "note": "Generic lure phrasing"
+    },
+    {
+      "id": "prize_lure",
+      "phrases": [
+        "you won a lottery",
+        "claim your cashback",
+        "claim your prize"
+      ],
+      "note": "Generic lure phrasing"
+    }
+  ]
+}

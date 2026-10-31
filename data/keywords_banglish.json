@@ -1,0 +1,23 @@
+{
+  "dataVersion": "0.1.0",
+  "language": "banglish",
+  "packs": [
+    {
+      "id": "otp_request",
+      "phrases": [
+        "OTP dao",
+        "PIN dao",
+        "password dao"
+      ],
+      "note": "Romanized Bangla lure phrasing"
+    },
+    {
+      "id": "prize_lure",
+      "phrases": [
+        "lottery jitechen",
+        "cashback paben"
+      ],
+      "note": "Romanized Bangla lure phrasing"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "dataVersion": "0.1.0",
+  "language": "bn",
+  "packs": [
+    {
+      "id": "otp_request",
+      "phrases": [
+        "OTP দিন",
+        "পিন দিন",
+        "পাসওয়ার্ড দিন"
+      ],
+      "note": "Generic lure phrasing, not a personal message"
+    },
+    {
+      "id": "prize_lure",
+      "phrases": [
+        "লটারি জিতেছেন",
+        "ক্যাশব্যাক পাবেন",
+        "পুরস্কার পেতে"
+      ],
+      "note": "Generic lure phrasing"
+    }
+  ]
+}
