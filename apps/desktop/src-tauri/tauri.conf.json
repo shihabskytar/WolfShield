@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "WolfShield",
+  "version": "0.1.0",
+  "identifier": "com.wolfshield.app",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420",
+    "beforeDevCommand": "pnpm dev",
+    "beforeBuildCommand": "pnpm build"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "WolfShield",
+        "width": 900,
+        "height": 700
+      }
+    ]
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "category": "Utility",
+    "windows": {
+      "nsis": {
+        "installerIcon": null
+      }
+    }
+  }
+}
