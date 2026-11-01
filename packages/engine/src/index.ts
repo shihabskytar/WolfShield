@@ -72,6 +72,25 @@ function add(signals: Signal[], id: string, weight: number, evidence: string, ex
 /** URL rules shared by checkUrl and by file Zone.Identifier origins. */
 export function urlSignals(raw: string): Signal[] {
   const signals: Signal[] = [];
+  // Parser-independent raw-host checks: Node 20 and Node 24 disagree on
+  // whether an invalid punycode label (e.g. xn--bkash) parses at all, so
+  // punycode and brand-in-label signals must not depend on URL parsing.
+  const rawHost = raw
+    .trim()
+    .replace(/^https?:\/\//i, "")
+    .split(/[\/?#]/)[0]
+    .replace(/^[^@]*@/, "")
+    .split(":")[0]
+    .toLowerCase();
+  if (rawHost.includes("xn--")) {
+    add(signals, "url_punycode", 20, rawHost, "explainPunycode");
+  }
+  for (const brand of BRANDS) {
+    const token = brand.name.toLowerCase().replace(/[^a-z]/g, "");
+    if (token.length >= 4 && rawHost.split(".").some((label) => label.includes(token) && label !== token)) {
+      add(signals, "url_brand_in_domain", 25, `${rawHost} (mentions ${brand.name})`, "explainBrandInDomain");
+    }
+  }
   let url: URL;
   try {
     url = new URL(raw.trim());
