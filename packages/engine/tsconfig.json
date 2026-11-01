@@ -12,7 +12,8 @@
       "@wolfshield/shared": [
         "../shared/src/index.ts"
       ]
-    }
+    },
+    "resolveJsonModule": true
   },
   "include": [
     "src",
