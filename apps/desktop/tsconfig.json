@@ -18,7 +18,8 @@
       "@wolfshield/engine": [
         "../../packages/engine/src/index.ts"
       ]
-    }
+    },
+    "resolveJsonModule": true
   },
   "include": [
     "src",
