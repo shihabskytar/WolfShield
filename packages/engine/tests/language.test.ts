@@ -16,7 +16,7 @@ describe("detectLanguage", () => {
   });
 });
 
-describe("checkText (M0 stub)", () => {
+describe("checkText (M1 rules engine)", () => {
   it("returns a neutral, deterministic result with versions", async () => {
     const a = await checkText("hello world");
     const b = await checkText("hello world");

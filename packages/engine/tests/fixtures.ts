@@ -1,0 +1,191 @@
+// M1 labelled fixtures. Verdicts are the expected engine verdict for the
+// exact input shown. All domains are .example or real official domains;
+// no real scam URL, phone number, or personal message is included.
+// Fixture count is asserted in fixtures.test.ts.
+import type { FileMeta, Verdict } from "@wolfshield/shared";
+
+export interface TextFixture {
+  kind: "text" | "url";
+  input: string;
+  verdict: Verdict;
+  note: string;
+}
+
+export interface FileFixture {
+  kind: "file";
+  meta: FileMeta;
+  verdict: Verdict;
+  note: string;
+}
+
+export type Fixture = TextFixture | FileFixture;
+
+const T: (input: string, verdict: Verdict, note: string) => TextFixture = (input, verdict, note) => ({ kind: "text", input, verdict, note });
+const U: (input: string, verdict: Verdict, note: string) => TextFixture = (input, verdict, note) => ({ kind: "url", input, verdict, note });
+const F: (meta: FileMeta, verdict: Verdict, note: string) => FileFixture = (meta, verdict, note) => ({ kind: "file", meta, verdict, note });
+
+export const FIXTURES: Fixture[] = [
+  // ---- Bangla text: dangerous (OTP/prize/send-money combined with a lure) ----
+  T("আপনার bKash অ্যাকাউন্ট বন্ধ হয়ে যাবে, এখনই OTP দিন", "dangerous", "bn otp + urgency + brand"),
+  T("লটারি জিতেছেন, পুরস্কার পেতে OTP দিন", "dangerous", "bn prize + otp"),
+  T("টাকা পাঠালে টাকা পাবেন, আগে OTP দিন", "dangerous", "bn send-to-receive + otp"),
+  T("চাকরির জন্য ফি দিন, OTP দিন", "dangerous", "bn job fee + otp"),
+  T("লোন অনুমোদন হয়েছে, OTP দিন, ২৪ ঘণ্টার মধ্যে যাচাই করুন", "dangerous", "bn loan + otp + urgency"),
+  T("ক্যাশব্যাক পাবেন, টাকা পাঠালে টাকা পাবেন, OTP দিন", "dangerous", "bn prize + send-to-receive + otp"),
+  T("Nagad থেকে পুরস্কার পেতে পিন দিন", "dangerous", "bn prize + pin + brand"),
+  T("bKash অ্যাকাউন্ট বন্ধ হয়ে যাবে, পাসওয়ার্ড দিন", "dangerous", "bn urgency + password + brand"),
+  // ---- Bangla text: suspicious (one strong signal + brand, or two lures) ----
+  T("OTP দিন", "suspicious", "bn otp alone reaches 40"),
+  T("bKash থেকে OTP দিন", "suspicious", "bn otp + brand"),
+  T("লটারি জিতেছেন, bKash থেকে পুরস্কার পেতে ক্লিক করুন", "suspicious", "bn prize + brand"),
+  T("চাকরির জন্য ফি দিন, bKash এ পাঠান", "suspicious", "bn job fee + brand"),
+  T("লোন অনুমোদন হয়েছে, Nagad এ যোগাযোগ করুন", "suspicious", "bn loan + brand"),
+  T("টাকা পাঠালে টাকা পাবেন, Rocket এ পাঠান", "suspicious", "bn send-to-receive + brand"),
+  T("লটারি জিতেছেন, ২৪ ঘণ্টার মধ্যে যাচাই করুন", "suspicious", "bn prize + urgency"),
+  T("ক্যাশব্যাক পাবেন, bKash এ", "suspicious", "bn prize + brand"),
+  // ---- Bangla text: safe (single weak signal, or no signal) ----
+  T("লটারি জিতেছেন", "safe", "bn prize phrase alone is 30, below threshold"),
+  T("২৪ ঘণ্টার মধ্যে যাচাই করুন", "safe", "bn urgency alone is 20"),
+  T("চাকরির জন্য ফি দিন", "safe", "bn job fee alone is 30"),
+  T("সহজে লোন পাবেন", "safe", "bn loan alone is 25"),
+  T("টাকা পাঠালে টাকা পাবেন", "safe", "bn send-to-receive alone is 35"),
+  T("bKash: আপনার স্টেটমেন্ট প্রস্তুত, অ্যাপে দেখুন", "safe", "bn genuine notice, brand mention only"),
+  T("আপনার অ্যাকাউন্টের স্টেটমেন্ট তৈরি হয়েছে", "safe", "bn ordinary notice, no lure"),
+  T("আজকের আবহাওয়া ভালো থাকবে", "safe", "bn ordinary message"),
+  T("সংবাদ প্রতিবেদন: প্রতারকরা OTP দিন বলে মানুষকে ঠকায়, এ বিষয়ে সতর্ক করা হয়েছে", "safe", "bn news quote guard suppresses lure keywords"),
+  T("প্রতিবেদন: প্রতারকরা লটারি জিতেছেন বলে মানুষকে ফাঁদে ফেলে, জনগণকে সতর্ক থাকতে বলা হয়েছে", "safe", "bn news quote guard, prize phrase"),
+  T("আমার বন্ধুকে টাকা পাঠিয়েছি", "safe", "bn ordinary money mention, no lure phrasing"),
+  // ---- English text ----
+  T("Your bKash account: verify within 24 hours or your account will be closed, share your OTP", "dangerous", "en otp + urgency + brand"),
+  T("You won a lottery, share your OTP to claim your prize", "dangerous", "en prize + otp"),
+  T("Send money to receive money, send your PIN first", "dangerous", "en send-to-receive + pin"),
+  T("Pay the registration fee for the job, share your OTP, and verify within 24 hours or your account will be closed", "dangerous", "en job fee + otp + urgency"),
+  T("Your loan is approved, verify your password, urgent verification required", "dangerous", "en loan + otp-family + urgency"),
+  T("Claim your cashback, send money to claim cashback, share your OTP", "dangerous", "en prize + send-to-receive + otp"),
+  T("Share your OTP", "suspicious", "en otp alone reaches 40"),
+  T("Share your OTP with bKash support", "suspicious", "en otp + brand"),
+  T("You won a lottery, claim your prize from Nagad", "suspicious", "en prize + brand"),
+  T("Pay to get the job via Rocket", "suspicious", "en job fee + brand"),
+  T("Your loan is approved by Bangladesh Bank, contact us", "suspicious", "en loan + brand"),
+  T("Send money first to get the bonus from bKash", "suspicious", "en send-to-receive + brand"),
+  T("You won a lottery, act now or your account will be blocked", "suspicious", "en prize + urgency"),
+  T("Send your PIN to bKash", "suspicious", "en pin + brand"),
+  T("You won a lottery", "safe", "en prize phrase alone is 30"),
+  T("Urgent verification required", "safe", "en urgency alone is 20"),
+  T("Pay the registration fee for the job", "safe", "en job fee alone is 30"),
+  T("Get an instant loan without interest", "safe", "en loan alone is 25"),
+  T("Send money to receive money", "safe", "en send-to-receive alone is 35"),
+  T("bKash: Your statement is ready in the app", "safe", "en genuine notice, brand mention only"),
+  T("Your monthly statement is ready", "safe", "en ordinary notice"),
+  T("The meeting is at 3pm tomorrow", "safe", "en ordinary message"),
+  T("News report: scammers tell people to share your OTP, and users are warned to stay alert", "safe", "en news quote guard"),
+  T("A news report warned the public that scammers promise lottery prizes to victims", "safe", "en news quote guard, prize"),
+  T("I sent money to my friend yesterday", "safe", "en ordinary money mention"),
+  T("Please update your password at the office desk", "safe", "en ordinary password mention, not the lure phrase"),
+  // ---- Banglish text ----
+  T("Tomar bKash account bondho hoye jabe, OTP dao", "dangerous", "banglish otp + urgency + brand"),
+  T("Lottery jitechen, OTP dao prize pete", "dangerous", "banglish prize + otp"),
+  T("Taka pathale taka paben, PIN dao", "dangerous", "banglish send-to-receive + pin"),
+  T("Chakrir jonno fee din, OTP dao, 24 ghontar moddhe verify korun", "dangerous", "banglish job fee + otp + urgency"),
+  T("Loan approve hoyeche, password dao, 24 ghontar moddhe verify korun", "dangerous", "banglish loan + password + urgency"),
+  T("OTP dao", "suspicious", "banglish otp alone reaches 40"),
+  T("bKash theke OTP dao", "suspicious", "banglish otp + brand"),
+  T("Lottery jitechen, cashback paben Nagad theke", "suspicious", "banglish prize + brand"),
+  T("Registration fee pathan bKash e, chakri paben", "suspicious", "banglish job fee + brand"),
+  T("Sohoje loan paben, bKash e contact korun", "suspicious", "banglish loan + brand"),
+  T("Age taka pathan tarpor bonus paben, Rocket e pathan", "suspicious", "banglish send-to-receive + brand"),
+  T("Lottery jitechen", "safe", "banglish prize phrase alone is 30"),
+  T("24 ghontar moddhe verify korun", "safe", "banglish urgency alone is 20"),
+  T("Chakrir jonno fee din", "safe", "banglish job fee alone is 30"),
+  T("Sohoje loan paben", "safe", "banglish loan alone is 25"),
+  T("Taka pathale taka paben", "safe", "banglish send-to-receive alone is 35"),
+  T("bKash: tomar statement app e ready", "safe", "banglish genuine notice, brand only"),
+  T("Kal class ache sokal 9 tay", "safe", "banglish ordinary message"),
+  T("Ami bondhuke taka pathiyechi", "safe", "banglish ordinary money mention"),
+  // ---- Mixed / edge text ----
+  T("আপনার bKash OTP dao, account bondho hoye jabe", "dangerous", "mixed bn+banglish otp + urgency + brand"),
+  T("Hello, your bKash OTP dao now", "suspicious", "mixed otp + brand"),
+  T("", "safe", "empty input"),
+  T("   ", "safe", "whitespace only"),
+  T("a".repeat(200), "safe", "long nonsense, no lure"),
+  T("OTP", "safe", "single word OTP, no lure phrase"),
+  T("123456", "safe", "digits only, no lure"),
+  T("https://bkash.com", "safe", "bare official URL in text box"),
+  T("Check this: https://bka5h.com/login.exe", "suspicious", "text with lookalike + executable link"),
+  T("Check this: https://bit.ly/abc123", "safe", "text with shortener alone"),
+  // ---- URLs ----
+  U("https://bkash.com", "safe", "official bKash domain"),
+  U("https://www.bkash.com", "safe", "official bKash with www"),
+  U("https://nagad.com.bd", "safe", "official Nagad domain"),
+  U("https://www.nagad.com.bd", "safe", "official Nagad with www"),
+  U("https://dutchbanglabank.com", "safe", "official Rocket bank domain"),
+  U("https://bb.org.bd", "safe", "official Bangladesh Bank domain"),
+  U("https://example.com/news", "safe", "ordinary link"),
+  U("https://github.com/shihabskytar/WolfShield", "safe", "ordinary repo link"),
+  U("https://bit.ly/abc123", "safe", "shortener alone is 20"),
+  U("https://example.com:8080/", "safe", "unusual port alone is 15"),
+  U("https://a.b.c.d.example.com/page", "safe", "excessive subdomains alone is 15"),
+  U("https://example.com/file.pdf", "safe", "ordinary document link"),
+  U("https://bka5h.com", "safe", "lookalike alone is 35, below threshold"),
+  U("https://bkash-offer.example", "suspicious", "seed blocklist 40 + brand in domain 25"),
+  U("https://nagad-prize.example/prize", "suspicious", "seed blocklist + brand in domain"),
+  U("https://bka5h.com/login.exe", "suspicious", "lookalike + executable"),
+  U("https://bit.ly/abc123/file.exe", "suspicious", "shortener + executable"),
+  U("https://user@example.com/login", "safe", "credentials alone is 30 — see note"),
+  U("https://user@192.168.1.10/login", "suspicious", "credentials + IP host"),
+  U("https://192.168.1.10:8080/app.exe", "dangerous", "IP host + port + executable"),
+  U("https://xn--bkash.example/login", "suspicious", "punycode + brand in domain"),
+  U("https://bkash-offer.example/login.exe", "dangerous", "blocklist + brand in domain + executable"),
+  U("https://login.bkash-secure.example/verify.exe", "suspicious", "brand in subdomain + executable"),
+  U("https://example.com/bkash-offer.exe", "suspicious", "brand in path + executable"),
+  U("https://a.b.c.d.example.com/app.apk", "suspicious", "excessive subdomains + executable"),
+  U("https://example.com:8443/setup.msi", "suspicious", "unusual port + executable"),
+  U("https://example.com/setup.scr", "safe", "executable alone is 30"),
+  U("https://example.com/setup.bat", "safe", "executable alone is 30"),
+  U("https://example.com/app.apk", "safe", "executable alone is 30"),
+  U("not a url :::", "safe", "malformed URL is 15"),
+  U("https://", "safe", "empty host malformed"),
+  U("www.example.com/page", "safe", "bare domain without scheme"),
+  // ---- Files ----
+  F({ fileName: "report.pdf" }, "safe", "ordinary document"),
+  F({ fileName: "photo.jpg" }, "safe", "ordinary image"),
+  F({ fileName: "setup.exe" }, "safe", "plain executable name, no disguise signal"),
+  F({ fileName: "document.docx" }, "safe", "ordinary document"),
+  F({ fileName: "notes.txt" }, "safe", "ordinary text file"),
+  F({ fileName: "photoshop-crack-setup.exe" }, "suspicious", "cracked naming alone reaches 40"),
+  F({ fileName: "office-keygen.exe" }, "suspicious", "keygen naming"),
+  F({ fileName: "windows-activator.exe" }, "suspicious", "activator naming"),
+  F({ fileName: "invoice.pdf.exe" }, "suspicious", "double extension + disguised executable"),
+  F({ fileName: "photo.jpg.exe" }, "suspicious", "image disguised as executable"),
+  F({ fileName: "invoice.pdf.exe", referrerUrl: "https://bkash.com/download" }, "dangerous", "double extension + disguised + official origin zone signal"),
+  F({ fileName: "crack-invoice.pdf.exe" }, "dangerous", "cracked + double extension + disguised"),
+  F({ fileName: "setup.exe", referrerUrl: "https://bkash-offer.example/setup.exe" }, "dangerous", "blocklist + brand + executable origin"),
+  F({ fileName: "setup.exe", referrerUrl: "https://bka5h.com/setup.exe" }, "dangerous", "lookalike + executable origin"),
+  F({ fileName: "setup.exe", referrerUrl: "https://bkash.com/download-page" }, "safe", "official origin only adds zone signal"),
+  F({ fileName: "setup.exe", hostUrl: "https://example.com/download-page" }, "safe", "ordinary host origin adds only the zone signal"),
+  F({ fileName: "app.apk", referrerUrl: "https://bit.ly/abc" }, "safe", "shortener origin 20 + zone 10 = 30"),
+  F({ fileName: "" }, "safe", "empty file name"),
+  F({ fileName: "archive.zip" }, "safe", "ordinary archive"),
+  F({ fileName: "invoice.pdf.zip" }, "safe", "double extension but final is not executable"),
+  // ---- Additional coverage ----
+  T("bKash থেকে লটারি জিতেছেন", "suspicious", "bn prize + brand, short form"),
+  T("Nagad এ টাকা পাঠালে টাকা পাবেন", "suspicious", "bn send-to-receive + brand, short form"),
+  T("Rocket থেকে OTP দিন", "suspicious", "bn otp + brand"),
+  T("আপনার অ্যাকাউন্ট বন্ধ হয়ে যাবে", "safe", "bn urgency alone is 20"),
+  T("Claim your prize from Rocket", "suspicious", "en prize + brand, short form"),
+  T("Send money first to get the bonus", "safe", "en send-to-receive alone is 35"),
+  T("Verify within 24 hours or your account will be closed", "safe", "en urgency alone is 20"),
+  T("Get an instant loan without interest from bKash", "suspicious", "en loan + brand"),
+  T("Cashback paben, bKash theke", "suspicious", "banglish prize + brand"),
+  T("PIN dao, Nagad theke", "suspicious", "banglish pin + brand"),
+  T("Tomar account bondho hoye jabe", "safe", "banglish urgency alone is 20"),
+  T("Amar porikkha ache kal", "safe", "banglish ordinary message"),
+  U("https://nagad.com.bd/login", "safe", "official Nagad login path"),
+  U("https://example.com.bd/page", "safe", "ordinary .bd link, no brand signal"),
+  U("https://tinyurl.com/abc123/setup.exe", "suspicious", "shortener + executable"),
+  U("https://example.com:9000/", "safe", "unusual port alone is 15"),
+  U("https://10.0.0.5/app.exe", "suspicious", "IP host + executable"),
+  U("https://example.com/file.js", "safe", "executable .js alone is 30"),
+  F({ fileName: "game-crack.zip" }, "suspicious", "cracked naming in archive name"),
+  F({ fileName: "setup.exe", referrerUrl: "https://bit.ly/abc/setup.exe" }, "suspicious", "shortener + executable origin + zone"),
+];
