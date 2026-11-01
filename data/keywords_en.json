@@ -19,6 +19,42 @@
         "claim your prize"
       ],
       "note": "Generic lure phrasing"
+    },
+    {
+      "id": "urgency_threat",
+      "phrases": [
+        "verify within 24 hours or your account will be closed",
+        "act now or your account will be blocked",
+        "urgent verification required"
+      ],
+      "note": "Generic lure phrasing"
+    },
+    {
+      "id": "job_fee",
+      "phrases": [
+        "pay the registration fee for the job",
+        "send the job fee to confirm",
+        "pay to get the job"
+      ],
+      "note": "Generic lure phrasing"
+    },
+    {
+      "id": "loan_lure",
+      "phrases": [
+        "your loan is approved",
+        "get an instant loan without interest",
+        "easy loan approved"
+      ],
+      "note": "Generic lure phrasing"
+    },
+    {
+      "id": "send_to_receive",
+      "phrases": [
+        "send money to receive money",
+        "send money first to get the bonus",
+        "send money to claim cashback"
+      ],
+      "note": "Generic lure phrasing"
     }
   ]
 }

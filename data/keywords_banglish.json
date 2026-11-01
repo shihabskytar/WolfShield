@@ -18,6 +18,39 @@
         "cashback paben"
       ],
       "note": "Romanized Bangla lure phrasing"
+    },
+    {
+      "id": "urgency_threat",
+      "phrases": [
+        "24 ghontar moddhe verify korun",
+        "account bondho hoye jabe",
+        "ekhoni korun nahole block"
+      ],
+      "note": "Romanized Bangla lure phrasing"
+    },
+    {
+      "id": "job_fee",
+      "phrases": [
+        "chakrir jonno fee din",
+        "registration fee pathan"
+      ],
+      "note": "Romanized Bangla lure phrasing"
+    },
+    {
+      "id": "loan_lure",
+      "phrases": [
+        "loan approve hoyeche",
+        "sohoje loan paben"
+      ],
+      "note": "Romanized Bangla lure phrasing"
+    },
+    {
+      "id": "send_to_receive",
+      "phrases": [
+        "taka pathale taka paben",
+        "age taka pathan tarpor bonus paben"
+      ],
+      "note": "Romanized Bangla lure phrasing"
     }
   ]
 }
