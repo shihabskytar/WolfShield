@@ -131,7 +131,7 @@ export const FIXTURES: Fixture[] = [
   U("https://nagad-prize.example/prize", "suspicious", "seed blocklist + brand in domain"),
   U("https://bka5h.com/login.exe", "suspicious", "lookalike + executable"),
   U("https://bit.ly/abc123/file.exe", "suspicious", "shortener + executable"),
-  U("https://user@example.com/login", "safe", "credentials alone is 30 — see note"),
+  U("https://admin@example/login", "safe", "credentials alone is 30 — see note"),
   U("https://user@192.168.1.10/login", "suspicious", "credentials + IP host"),
   U("https://192.168.1.10:8080/app.exe", "dangerous", "IP host + port + executable"),
   U("https://xn--bkash.example/login", "suspicious", "punycode + brand in domain"),
