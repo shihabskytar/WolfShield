@@ -23,16 +23,18 @@ WolfShield is built for the people those tools leave out: students, office worke
 
 ## What WolfShield does
 
-> **M0 status — read this first.** This milestone is the scaffold only. The app launches, the quick-check window renders, and the engine runs its first test. **The detection rules engine, classifier, download watcher, tray, hotkey, and shell integration are NOT built yet** — they are M1–M4 in the roadmap below. Nothing in this README claims otherwise.
+> **M1 status — read this first.** The quick-check result card and the rules engine are built: paste a message or link and you get a verdict, a score, and the top signals with evidence, in Bangla or English. **The classifier, download watcher, tray, hotkey, clipboard check, and shell integration are NOT built yet** — they are M2–M4, plus a deferred M1 follow-up, in the roadmap below. Nothing in this README claims otherwise.
 
-| Area | M0 status |
+| Area | M1 status |
 | --- | --- |
 | Desktop shell | ✅ Tauri 2 app shell, React + TypeScript + Vite + Tailwind UI |
-| Detection engine | 🧪 Pure TypeScript package, language detection + first test only |
+| Detection engine | ✅ Rules engine: URL/brand/text/file signals, 154 labelled fixtures |
+| Quick-check result card | ✅ Verdict, score, top signals with evidence, bn/en reasons |
 | i18n | ✅ Bangla (default) + English strings, no hard-coded UI text |
 | Data packs | ✅ Versioned brand list + keyword packs, with provenance |
 | Privacy | ✅ Offline by default, no telemetry, no accounts |
-| Rules / classifier / watcher | ⏳ M1–M3 — not yet built |
+| Tray / hotkey / clipboard | ⏳ Deferred from M1 — see docs/DECISIONS.md (plugin verification pending) |
+| Classifier / watcher | ⏳ M2–M3 — not yet built |
 
 ## Screenshots
 
@@ -51,7 +53,7 @@ WolfShield is built for the people those tools leave out: students, office worke
 └─────────────────────────────────────────────────────────────┘
 ```
 
-*Real screenshots will replace this placeholder after the M1 result card lands. No screenshot image is linked here, so nothing on this page can break.*
+*The M1 result card is built (verdict, score, signals with evidence), but no screenshot image is linked here yet, so nothing on this page can break. Real screenshots will replace this placeholder in a later slice.*
 
 ## Quick start
 
@@ -105,8 +107,8 @@ Detail: [docs/DETECTION.md](docs/DETECTION.md) · Privacy and threats: [docs/THR
 
 ## Roadmap
 
-- **M0 — Scaffold** ✅ *this milestone:* monorepo, app shell, engine test, docs, CI
-- **M1 — Quick check + rules engine:** tray, hotkey, clipboard check, URL/text/brand rules, 150+ labelled fixtures
+- **M0 — Scaffold** ✅ monorepo, app shell, engine test, docs, CI
+- **M1 — Quick check + rules engine** ✅ URL/text/brand/file rules, result card, 154 labelled fixtures — tray, hotkey, and clipboard check deferred to a follow-up slice (plugin verification pending, see docs/DECISIONS.md)
 - **M2 — Classifier:** char n-gram TF-IDF + logistic regression, under 10 MB, lazy-loaded, rules-only fallback
 - **M3 — Download watcher:** Downloads monitoring (opt-in), SHA-256, Zone.Identifier origin, file heuristics
 - **M4 — Windows integration + settings:** shell menu, language/hotkey/autostart settings, first-run onboarding, optional local history (off by default)
