@@ -31,6 +31,12 @@
   audience word, so merely adding the word "news" does not suppress
   signals. A scammer imitating reporting framing remains a known
   failure case in docs/DETECTION.md.
+- **URL punycode/brand signals are parser-independent (CI fix, run #31).**
+  Node 20 (CI) and Node 24 (local) disagree on whether an invalid
+  punycode label such as `xn--bkash` parses via `new URL()` — CI
+  treated it as malformed (15, safe) instead of punycode + brand
+  (45, suspicious). `urlSignals` now extracts the raw host before
+  parsing, so those two signals fire on either Node version.
 - **SHA-256 blocklist is an empty hook in M1.** Shipping a real
   hash list without a verified, signed source would be worse than
   shipping none; the hook is wired and documented.
